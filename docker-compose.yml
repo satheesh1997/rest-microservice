@@ -1,0 +1,25 @@
+version: '2'
+services:
+  mysql:
+    image: mysql/mysql-server:5.7
+    container_name: satheesh.dev.micro.mysql
+    environment:
+      MYSQL_DATABASE: db
+      MYSQL_USER: dbadmin
+      MYSQL_PASSWORD: dbadmin
+      MYSQL_ROOT_PASSWORD: dbadmin
+    ports:
+    - 3306:3306
+  app:
+    restart: always
+    container_name: satheesh.dev.micro.app
+    image: satheesh1997/rest-microservice
+    ports:
+      - 5000:5000
+    build:
+      context: .
+    volumes:
+      - .:/app
+    command: sh -c "export FLASK_APP=micro && flask run --host=0.0.0.0"
+    depends_on:
+      - mysql
